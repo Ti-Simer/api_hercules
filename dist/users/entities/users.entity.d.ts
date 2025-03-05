@@ -1,7 +1,7 @@
 import { Roles } from 'src/roles/entities/roles.entity';
 export declare class User {
     id: string;
-    state: string;
+    state: number;
     status: string;
     firstName: string;
     lastName: string;

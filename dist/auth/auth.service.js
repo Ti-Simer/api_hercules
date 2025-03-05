@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var _a, _b, _c;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
@@ -31,10 +30,10 @@ let AuthService = exports.AuthService = class AuthService {
     async createInitialPermissions() {
         let existingPermissions = [];
         const initialPermissions = [
-            { id: (0, uuid_1.v4)(), name: 'Super_usuario', accessCode: 's', state: 'ACTIVO', description: 'Añade permisos especiales para acciones que lo requieran.' },
-            { id: (0, uuid_1.v4)(), name: 'Escritura', accessCode: 'w', state: 'ACTIVO', description: 'La escritura permite al usuario añadir información a los parámetros del sistema.' },
-            { id: (0, uuid_1.v4)(), name: 'Lectura', accessCode: 'r', state: 'ACTIVO', description: 'La lectura permite al usuario visualizar la información de los parámetros del sistema.' },
-            { id: (0, uuid_1.v4)(), name: 'Edición', accessCode: 'e', state: 'ACTIVO', description: 'La edición permite al usuario cambiar la información de los parámetros del sistema.' },
+            { id: (0, uuid_1.v4)(), name: 'Super_usuario', accessCode: 's', state: 1, description: 'Añade permisos especiales para acciones que lo requieran.' },
+            { id: (0, uuid_1.v4)(), name: 'Escritura', accessCode: 'w', state: 1, description: 'La escritura permite al usuario añadir información a los parámetros del sistema.' },
+            { id: (0, uuid_1.v4)(), name: 'Lectura', accessCode: 'r', state: 1, description: 'La lectura permite al usuario visualizar la información de los parámetros del sistema.' },
+            { id: (0, uuid_1.v4)(), name: 'Edición', accessCode: 'e', state: 1, description: 'La edición permite al usuario cambiar la información de los parámetros del sistema.' },
         ];
         for (let i = 0; i < initialPermissions.length; i++) {
             const permission = await this.permissionsRepository.findOne({
@@ -73,13 +72,13 @@ let AuthService = exports.AuthService = class AuthService {
                 case 'Administrador General':
                     adminRole.id = (0, uuid_1.v4)();
                     adminRole.name = roleNames[i];
-                    adminRole.state = 'ACTIVO';
+                    adminRole.state = 1;
                     adminRole.permissions = permissions;
                     break;
                 case 'Administrador Comercial':
                     comercialRole.id = (0, uuid_1.v4)();
                     comercialRole.name = roleNames[i];
-                    comercialRole.state = 'ACTIVO';
+                    comercialRole.state = 1;
                     comercialRole.permissions = permissionsSisCom;
                     break;
                 default:
@@ -102,7 +101,7 @@ let AuthService = exports.AuthService = class AuthService {
         const hashedPassword = await bcrypt.hash('6ebS#r&#^B6n', 10);
         const userBase = new users_entity_1.User();
         userBase.id = (0, uuid_1.v4)();
-        userBase.state = 'ACTIVO';
+        userBase.state = 1;
         userBase.firstName = 'USUARIO';
         userBase.lastName = 'ADMIN';
         userBase.fullName = 'USUARIO ADMIN';
@@ -123,6 +122,8 @@ exports.AuthService = AuthService = __decorate([
     __param(0, (0, typeorm_2.InjectRepository)(users_entity_1.User)),
     __param(1, (0, typeorm_2.InjectRepository)(permission_entity_1.Permissions)),
     __param(2, (0, typeorm_2.InjectRepository)(roles_entity_1.Roles)),
-    __metadata("design:paramtypes", [typeof (_a = typeof typeorm_1.Repository !== "undefined" && typeorm_1.Repository) === "function" ? _a : Object, typeof (_b = typeof typeorm_1.Repository !== "undefined" && typeorm_1.Repository) === "function" ? _b : Object, typeof (_c = typeof typeorm_1.Repository !== "undefined" && typeorm_1.Repository) === "function" ? _c : Object])
+    __metadata("design:paramtypes", [typeorm_1.Repository,
+        typeorm_1.Repository,
+        typeorm_1.Repository])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

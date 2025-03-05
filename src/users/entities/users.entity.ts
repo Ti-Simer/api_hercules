@@ -7,7 +7,7 @@ export class User {
   id: string;
 
   @Column()
-  state: string;
+  state: number;
 
   @Column({ default: '' })
   status: string;

@@ -7,6 +7,10 @@ import { PermissionsModule } from './permissions/permissions.module';
 import { AuthModule } from './auth/auth.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { UsersModule } from './users/users.module';
+import { LocationsModule } from './locations/locations.module';
+import { StorageTanksModule } from './storage-tanks/storage-tanks.module';
+import { DevicesModule } from './devices/devices.module';
+import { DataModule } from './data/data.module';
 
 @Module({
   imports: [
@@ -28,6 +32,10 @@ import { UsersModule } from './users/users.module';
     RolesModule,
     PermissionsModule,
     AuthModule,
+    LocationsModule,
+    StorageTanksModule,
+    DevicesModule,
+    DataModule,
   ],
   controllers: [AppController],
   providers: [AppService],

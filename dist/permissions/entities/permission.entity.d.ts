@@ -2,7 +2,7 @@ export declare class Permissions {
     id: string;
     name: string;
     accessCode: string;
-    state: string;
+    state: number;
     description: string;
     create: Date;
     update: Date;

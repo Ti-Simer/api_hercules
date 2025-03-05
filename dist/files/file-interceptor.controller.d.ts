@@ -1,8 +1,15 @@
-import { Express } from 'express';
+/// <reference types="multer" />
 export declare class FileInterceptorController {
     uploadFile(file: Express.Multer.File, body: {
         company: string;
         phone: string;
         email: string;
-    }): unknown;
+    }): Promise<{
+        message: string;
+        imageSize: number;
+        imageType: string;
+        company: string;
+        phone: string;
+        email: string;
+    }>;
 }

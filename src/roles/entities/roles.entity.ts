@@ -10,7 +10,7 @@ export class Roles {
   name: string;
 
   @Column()
-  state: string;
+  state: number;
 
   @ManyToMany(() => Permissions, { cascade: true }) // Define la relación ManyToMany con Permission
   @JoinTable() // Esta anotación se utiliza para configurar la tabla de unión automáticamente

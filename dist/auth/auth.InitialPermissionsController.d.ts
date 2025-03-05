@@ -3,8 +3,8 @@ export declare class InitialPermissionsController {
     private readonly authService;
     constructor(authService: AuthService);
     createInitialPermissions(): {
-        permissions: any;
-        roles: unknown;
-        user: unknown;
+        permissions: Promise<void>;
+        roles: Promise<any[]>;
+        user: Promise<import("../users/entities/users.entity").User>;
     };
 }

@@ -12,7 +12,7 @@ export class Permissions {
   accessCode: string;
 
   @Column()
-  state: string;
+  state: number;
 
   @Column('text')
   description: string;

@@ -16,6 +16,10 @@ const permissions_module_1 = require("./permissions/permissions.module");
 const auth_module_1 = require("./auth/auth.module");
 const throttler_1 = require("@nestjs/throttler");
 const users_module_1 = require("./users/users.module");
+const locations_module_1 = require("./locations/locations.module");
+const storage_tanks_module_1 = require("./storage-tanks/storage-tanks.module");
+const devices_module_1 = require("./devices/devices.module");
+const data_module_1 = require("./data/data.module");
 let AppModule = exports.AppModule = class AppModule {
 };
 exports.AppModule = AppModule = __decorate([
@@ -39,6 +43,10 @@ exports.AppModule = AppModule = __decorate([
             roles_module_1.RolesModule,
             permissions_module_1.PermissionsModule,
             auth_module_1.AuthModule,
+            locations_module_1.LocationsModule,
+            storage_tanks_module_1.StorageTanksModule,
+            devices_module_1.DevicesModule,
+            data_module_1.DataModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

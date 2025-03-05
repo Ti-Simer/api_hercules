@@ -4,7 +4,7 @@ import { Request } from 'express';
 import { User } from './entities/users.entity';
 import { UsersService } from './users.service';
 
-@Controller('users')
+@Controller('usuarios')
 @UseGuards(ApiKeyGuard)
 export class UsersController {
   constructor(private usersService: UsersService) { }
@@ -42,7 +42,7 @@ export class UsersController {
   }
 
   @Post('login')
-  async loginUser(@Req() req: Request, @Body() loginData: { credentials: string; password: string }): Promise<any> {
+  async loginUser(@Req() req: Request, @Body() loginData: { credentials: string; password: string }): Promise<any> {    
     const { credentials, password } = loginData;
     return this.usersService.loginUser(req, credentials, password);
   }

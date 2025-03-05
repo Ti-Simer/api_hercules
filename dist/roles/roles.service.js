@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var _a, _b;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RolesService = void 0;
 const common_1 = require("@nestjs/common");
@@ -29,7 +28,7 @@ let RolesService = exports.RolesService = class RolesService {
     async findAll() {
         try {
             const roles = await this.rolesRepository.find({
-                where: { state: 'ACTIVO' },
+                where: { state: 1 },
                 relations: ['permissions'],
             });
             if (roles) {
@@ -71,7 +70,7 @@ let RolesService = exports.RolesService = class RolesService {
                 const newRole = this.rolesRepository.create({
                     ...rolesData,
                     id: (0, uuid_1.v4)(),
-                    state: 'ACTIVO',
+                    state: 1,
                     permissions: permissions
                 });
                 const createdRole = await this.rolesRepository.save(newRole);
@@ -92,7 +91,7 @@ let RolesService = exports.RolesService = class RolesService {
             if (!existingRol) {
                 return response_util_1.ResponseUtil.error(404, 'Rol no encontrado');
             }
-            existingRol.state = 'INACTIVO';
+            existingRol.state = 0;
             const updatedRol = await this.rolesRepository.save(existingRol);
             if (updatedRol) {
                 return response_util_1.ResponseUtil.success(200, 'Rol eliminado exitosamente', updatedRol);
@@ -133,6 +132,7 @@ exports.RolesService = RolesService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(roles_entity_1.Roles)),
     __param(1, (0, typeorm_1.InjectRepository)(permission_entity_1.Permissions)),
-    __metadata("design:paramtypes", [typeof (_a = typeof typeorm_2.Repository !== "undefined" && typeorm_2.Repository) === "function" ? _a : Object, typeof (_b = typeof typeorm_2.Repository !== "undefined" && typeorm_2.Repository) === "function" ? _b : Object])
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository])
 ], RolesService);
 //# sourceMappingURL=roles.service.js.map

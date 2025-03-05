@@ -16,7 +16,7 @@ export class RolesService {
     async findAll(): Promise<any> {
         try {
             const roles = await this.rolesRepository.find({
-                where: { state: 'ACTIVO' },
+                where: { state: 1 },
                 relations: ['permissions'], // Cargar relaciones
             });
 
@@ -85,7 +85,7 @@ export class RolesService {
                 const newRole = this.rolesRepository.create({
                     ...rolesData,
                     id: uuidv4(), // Generar un nuevo UUID
-                    state: 'ACTIVO',
+                    state: 1,
                     permissions: permissions
                 });
 
@@ -120,7 +120,7 @@ export class RolesService {
                 return ResponseUtil.error(404, 'Rol no encontrado');
             }
 
-            existingRol.state = 'INACTIVO'; // Cambiar el estado a 'INACTIVO'
+            existingRol.state = 0; // Cambiar el estado a 'INACTIVO'
             const updatedRol = await this.rolesRepository.save(existingRol);
 
             if (updatedRol) {

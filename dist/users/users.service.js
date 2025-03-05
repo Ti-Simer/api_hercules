@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var _a, _b, _c;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersService = void 0;
 const common_1 = require("@nestjs/common");
@@ -22,7 +21,6 @@ const bcrypt = require("bcryptjs");
 const uuid_1 = require("uuid");
 const jwt = require("jsonwebtoken");
 const moment = require("moment");
-const express_1 = require("express");
 const users_entity_1 = require("./entities/users.entity");
 let UsersService = exports.UsersService = class UsersService {
     constructor(usersRepository) {
@@ -46,7 +44,7 @@ let UsersService = exports.UsersService = class UsersService {
                     ...userData,
                     password: hashedPassword,
                     id: (0, uuid_1.v4)(),
-                    state: 'ACTIVO',
+                    state: 1,
                     status: 'DISPONIBLE'
                 });
                 const createdUser = await this.usersRepository.save(newUser);
@@ -72,6 +70,9 @@ let UsersService = exports.UsersService = class UsersService {
             if (!user) {
                 return response_util_1.ResponseUtil.error(404, 'Usuario no encontrado');
             }
+            if (user.state === 0) {
+                return response_util_1.ResponseUtil.error(401, 'Usuario inactivo');
+            }
             const currentTime = moment().format('YYYY-MM-DD HH:mm:ss');
             const isPasswordValid = await bcrypt.compare(password, user.password);
             const clientIp = req.ip;
@@ -85,7 +86,7 @@ let UsersService = exports.UsersService = class UsersService {
                 console.log('========================================================================================');
                 return response_util_1.ResponseUtil.error(401, 'Contraseña incorrecta');
             }
-            const accessToken = jwt.sign({ userId: user.id, key: 'poseidon-M0NT4645+.6040', color: '#014e87', system: 'Poseidon' }, 'poseidon', { expiresIn: '1h' });
+            const accessToken = jwt.sign({ userId: user.id, key: 'hercules-M0NT4645+.6040', color: '#2E6187', system: 'Hercules' }, 'poseidon', { expiresIn: '1h' });
             console.log('====================================Usuario logueado====================================');
             console.log(`Hora del servidor: ${currentTime}`);
             console.log(`Usuario: ${user.firstName}, ${user.lastName}`);
@@ -124,7 +125,7 @@ let UsersService = exports.UsersService = class UsersService {
             if (!existingTablet) {
                 return response_util_1.ResponseUtil.error(404, 'Usuario no encontrado');
             }
-            existingTablet.state = 'INACTIVO';
+            existingTablet.state = 0;
             const updatedTablet = await this.usersRepository.save(existingTablet);
             if (updatedTablet) {
                 return response_util_1.ResponseUtil.success(200, 'Usuario eliminado exitosamente', updatedTablet);
@@ -145,7 +146,7 @@ let UsersService = exports.UsersService = class UsersService {
             if (!existingTablet) {
                 return response_util_1.ResponseUtil.error(404, 'Usuario no encontrado');
             }
-            existingTablet.state = 'ACTIVO';
+            existingTablet.state = 1;
             const updatedTablet = await this.usersRepository.save(existingTablet);
             if (updatedTablet) {
                 return response_util_1.ResponseUtil.success(200, 'Usuario eliminado exitosamente', updatedTablet);
@@ -220,12 +221,12 @@ let UsersService = exports.UsersService = class UsersService {
 __decorate([
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [typeof (_b = typeof express_1.Request !== "undefined" && express_1.Request) === "function" ? _b : Object, String, String]),
-    __metadata("design:returntype", typeof (_c = typeof Promise !== "undefined" && Promise) === "function" ? _c : Object)
+    __metadata("design:paramtypes", [Object, String, String]),
+    __metadata("design:returntype", Promise)
 ], UsersService.prototype, "loginUser", null);
 exports.UsersService = UsersService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(users_entity_1.User)),
-    __metadata("design:paramtypes", [typeof (_a = typeof typeorm_2.Repository !== "undefined" && typeorm_2.Repository) === "function" ? _a : Object])
+    __metadata("design:paramtypes", [typeorm_2.Repository])
 ], UsersService);
 //# sourceMappingURL=users.service.js.map

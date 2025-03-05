@@ -24,10 +24,10 @@ export class AuthService {
     let existingPermissions: Permissions[] = [];
 
     const initialPermissions = [
-      { id: uuidv4(), name: 'Super_usuario', accessCode: 's', state: 'ACTIVO', description: 'Añade permisos especiales para acciones que lo requieran.' },
-      { id: uuidv4(), name: 'Escritura', accessCode: 'w', state: 'ACTIVO', description: 'La escritura permite al usuario añadir información a los parámetros del sistema.' },
-      { id: uuidv4(), name: 'Lectura', accessCode: 'r', state: 'ACTIVO', description: 'La lectura permite al usuario visualizar la información de los parámetros del sistema.' },
-      { id: uuidv4(), name: 'Edición', accessCode: 'e', state: 'ACTIVO', description: 'La edición permite al usuario cambiar la información de los parámetros del sistema.' },
+      { id: uuidv4(), name: 'Super_usuario', accessCode: 's', state: 1, description: 'Añade permisos especiales para acciones que lo requieran.' },
+      { id: uuidv4(), name: 'Escritura', accessCode: 'w', state: 1, description: 'La escritura permite al usuario añadir información a los parámetros del sistema.' },
+      { id: uuidv4(), name: 'Lectura', accessCode: 'r', state: 1, description: 'La lectura permite al usuario visualizar la información de los parámetros del sistema.' },
+      { id: uuidv4(), name: 'Edición', accessCode: 'e', state: 1, description: 'La edición permite al usuario cambiar la información de los parámetros del sistema.' },
     ];
 
     for (let i = 0; i < initialPermissions.length; i++) {
@@ -78,14 +78,14 @@ export class AuthService {
         case 'Administrador General':
           adminRole.id = uuidv4();
           adminRole.name = roleNames[i];
-          adminRole.state = 'ACTIVO';
+          adminRole.state = 1;
           adminRole.permissions = permissions;
           break;
 
         case 'Administrador Comercial':
           comercialRole.id = uuidv4();
           comercialRole.name = roleNames[i];
-          comercialRole.state = 'ACTIVO';
+          comercialRole.state = 1;
           comercialRole.permissions = permissionsSisCom;
           break;
 
@@ -115,7 +115,7 @@ export class AuthService {
 
     const userBase = new User();
     userBase.id = uuidv4();
-    userBase.state = 'ACTIVO';
+    userBase.state = 1;
     userBase.firstName = 'USUARIO';
     userBase.lastName = 'ADMIN';
     userBase.fullName = 'USUARIO ADMIN';

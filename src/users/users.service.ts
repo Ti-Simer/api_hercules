@@ -38,7 +38,7 @@ export class UsersService {
           ...userData,
           password: hashedPassword, // Asigna la contraseña cifrada
           id: uuidv4(), // Generar un nuevo UUID
-          state: 'ACTIVO',
+          state: 1,
           status: 'DISPONIBLE'
         });
 
@@ -78,6 +78,10 @@ export class UsersService {
         return ResponseUtil.error(404, 'Usuario no encontrado');
       }
 
+      if (user.state === 0) {
+        return ResponseUtil.error(401, 'Usuario inactivo');
+      }
+
       const currentTime = moment().format('YYYY-MM-DD HH:mm:ss');
       const isPasswordValid = await bcrypt.compare(password, user.password);
       const clientIp = req.ip;
@@ -95,7 +99,7 @@ export class UsersService {
 
       // Generar un token de acceso
       const accessToken = jwt.sign(
-        { userId: user.id, key: 'poseidon-M0NT4645+.6040', color: '#014e87', system: 'Poseidon' },
+        { userId: user.id, key: 'hercules-M0NT4645+.6040', color: '#2E6187', system: 'Hercules' },
         'poseidon',
         { expiresIn: '1h' }
       );
@@ -153,7 +157,7 @@ export class UsersService {
         return ResponseUtil.error(404, 'Usuario no encontrado');
       }
 
-      existingTablet.state = 'INACTIVO';
+      existingTablet.state = 0;
       const updatedTablet = await this.usersRepository.save(existingTablet);
 
       if (updatedTablet) {
@@ -186,7 +190,7 @@ export class UsersService {
         return ResponseUtil.error(404, 'Usuario no encontrado');
       }
 
-      existingTablet.state = 'ACTIVO';
+      existingTablet.state = 1;
       const updatedTablet = await this.usersRepository.save(existingTablet);
 
       if (updatedTablet) {

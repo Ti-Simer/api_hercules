@@ -7,7 +7,7 @@ export declare class AuthService {
     private readonly permissionsRepository;
     private readonly rolesRepository;
     constructor(usersRepository: Repository<User>, permissionsRepository: Repository<Permissions>, rolesRepository: Repository<Roles>);
-    createInitialPermissions(): any;
-    createInitialRoles(): unknown;
-    createInitialUser(): unknown;
+    createInitialPermissions(): Promise<void>;
+    createInitialRoles(): Promise<any[]>;
+    createInitialUser(): Promise<User>;
 }

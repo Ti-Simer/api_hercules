@@ -28,7 +28,7 @@ export class PermissionsService {
         const newPermission = this.permissionsRepository.create({
           ...permissionData,
           id: uuidv4(), // Generar un nuevo UUID
-          state: 'ACTIVO'
+          state: 1
         });
         const createdPermission = await this.permissionsRepository.save(newPermission);
 
@@ -55,7 +55,7 @@ export class PermissionsService {
 
   async findAll(): Promise<any> {
     try {
-      const permissions = await this.permissionsRepository.find({ where: { state: 'ACTIVO' } });
+      const permissions = await this.permissionsRepository.find({ where: { state: 1 } });
 
       if (permissions) {
         return ResponseUtil.success(
@@ -143,7 +143,7 @@ export class PermissionsService {
         return ResponseUtil.error(404, 'Permiso no encontrado');
       }
 
-      existingPermission.state = 'INACTIVO';
+      existingPermission.state = 0;
       const updatedPermission = await this.permissionsRepository.save(existingPermission);
 
       if (updatedPermission) {
@@ -165,5 +165,5 @@ export class PermissionsService {
       );
     }
   }
-  
+
 }
