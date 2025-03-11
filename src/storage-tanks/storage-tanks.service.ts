@@ -206,19 +206,19 @@ export class StorageTanksService {
         );
       }
 
-      if (storageTankData.level) {
-        let actual_data = existingStorageTank.aforo.find(aforo => aforo['Altura mm'] === storageTankData.level);
-
-        if (!actual_data) {
-          // Encontrar el valor más cercano
-          const closestAforo = existingStorageTank.aforo.reduce((prev, curr) => {
-            return (Math.abs(curr['Altura mm'] - storageTankData.level) < Math.abs(prev['Altura mm'] - storageTankData.level) ? curr : prev);
+      if (storageTankData.aforo) {
+        try {
+          let parsedAforoData;
+          parsedAforoData = parse(storageTankData.aforo, {
+            columns: true,
+            skip_empty_lines: true,
+            delimiter: ';' // Especificar el delimitador correcto
           });
-
-          actual_data = closestAforo;
+          storageTankData.aforo = parsedAforoData;
+        } catch (error) {
+          console.error('Error parsing aforo_data:', error);
+          return ResponseUtil.error(400, 'El campo aforo no es un CSV válido');
         }
-
-        storageTankData.actual_data = actual_data;
       }
 
       const updatedStorageTank = await this.storageTankRepository.save({
@@ -233,8 +233,6 @@ export class StorageTanksService {
           {
             "serial": updatedStorageTank.serial,
             "state": updatedStorageTank.state,
-            "level": updatedStorageTank.level,
-            "actual_data": updatedStorageTank.actual_data,
             "update": updatedStorageTank.update,
           }
         );

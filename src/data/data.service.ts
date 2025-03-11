@@ -6,6 +6,7 @@ import { ResponseUtil } from 'src/utils/response.util';
 import { StorageTank } from 'src/storage-tanks/entities/storage-tank.entity';
 import { Device } from 'src/devices/entities/device.entity';
 import { Methods } from 'src/data/methods/methods';
+import { Location } from 'src/locations/entities/location.entity';
 
 @Injectable()
 export class DataService {
@@ -13,7 +14,8 @@ export class DataService {
   constructor(
     @InjectRepository(Datum) private datumRepository: Repository<Datum>,
     @InjectRepository(StorageTank) private storageTankRepository: Repository<StorageTank>,
-    @InjectRepository(Device) private deviceRepository: Repository<StorageTank>,
+    @InjectRepository(Device) private deviceRepository: Repository<Device>,
+    @InjectRepository(Location) private locationRepository: Repository<Location>,
     private methods: Methods
   ) { }
 
@@ -191,6 +193,68 @@ export class DataService {
         );
       }
     } catch (error) {
+      return ResponseUtil.error(
+        500,
+        'Error al obtener la Data',
+        error.message
+      );
+    }
+  }
+
+  async findDataByImei(imei: string) {
+    try {
+      if (imei) {
+        const device = await this.deviceRepository
+          .createQueryBuilder('devices')
+          .where('devices.imei = :imei', { imei })
+          .leftJoinAndSelect('devices.location', 'location')
+          .leftJoinAndSelect('location.children', 'child')
+          .leftJoinAndSelect('location.parent_id', 'parent')
+          .getOne();
+
+        const storage_tank = await this.storageTankRepository
+          .createQueryBuilder('storage_tanks')
+          .where('storage_tanks.device = :device', { device: device.id })
+          .getOne();
+
+        const response = {
+          device,
+          storage_tank,
+        };
+
+        return ResponseUtil.success(
+          200,
+          'Data encontrada',
+          response
+        );
+      }
+    } catch (error) {
+      return ResponseUtil.error(
+        500,
+        'Error al obtener la Data',
+        error.message
+      );
+    }
+  }
+
+  async findDataByLocality(id: string) {
+    try {
+      if (id) {
+        const location = await this.locationRepository
+          .createQueryBuilder('location')
+          .leftJoinAndSelect('location.children', 'child')
+          .leftJoinAndSelect('location.parent_id', 'parent')
+          .where('location.id = :id', { id })
+          .getOne();
+
+        return ResponseUtil.success(
+          200,
+          'Data encontrada',
+          location
+        );
+      }
+    } catch (error) {
+      console.error('Error al obtener la Data:', error);
       return ResponseUtil.error(
         500,
         'Error al obtener la Data',

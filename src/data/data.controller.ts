@@ -16,6 +16,16 @@ export class DataController {
     return this.dataService.findLatestDataByImei(imei);
   }
 
+  @Get('findDataByImei/:imei')
+  async findDataByImei(@Param('imei') imei: string): Promise<any> {
+    return this.dataService.findDataByImei(imei);
+  }
+
+  @Get('findDataByLocality/:id')
+  async findDataByLocality(@Param('id') id: string): Promise<any> {
+    return this.dataService.findDataByLocality(id);
+  }
+
   @Get('findLatestData')
   async findLatestData(): Promise<any> {
     return this.dataService.findLatestData();

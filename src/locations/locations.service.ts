@@ -125,19 +125,19 @@ export class LocationsService {
       if (city) {
         return ResponseUtil.success(
           200,
-          'Ciudad encontrada',
+          'Localidad encontrada',
           city
         );
       } else {
         return ResponseUtil.error(
           404,
-          'Ciudad no encontrada'
+          'Localidad no encontrada'
         );
       }
     } catch (error) {
       return ResponseUtil.error(
         500,
-        'Error al obtener la Ciudad'
+        'Error al obtener la Localidad'
       );
     }
   }
@@ -154,27 +154,44 @@ export class LocationsService {
       if (!existingLocation) {
         return ResponseUtil.error(
           400,
-          'Ciudad no encontrada'
+          'Localidad no encontrada'
         );
       }
 
-      const updatedCity = await this.locationRepository.save({
+      if (locationData.parent_id) {
+        const parentLocation = await this.locationRepository
+          .createQueryBuilder('location')
+          .where('location.id = :id', { id: locationData.parent_id.toString() })
+          .orWhere('location.name = :name', { name: locationData.parent_id.toString() })
+          .getOne();
+
+        if (!parentLocation) {
+          return ResponseUtil.error(
+            400,
+            'La Ubicación padre especificada no existe'
+          );
+        }
+
+        locationData.parent_id = parentLocation
+      }
+
+      const updatedLocation = await this.locationRepository.save({
         ...existingLocation,
         ...locationData,
       });
 
-      if (updatedCity) {
+      if (updatedLocation) {
         return ResponseUtil.success(
           200,
-          'Ciudad actualizada exitosamente',
-          updatedCity
+          'Localidad actualizada exitosamente',
+          updatedLocation
         );
       }
 
     } catch (error) {
       return ResponseUtil.error(
         404,
-        'Ciudad no encontrada'
+        'Localidad no encontrada'
       );
     }
   }
@@ -188,28 +205,28 @@ export class LocationsService {
         .getOne();
 
       if (!existingLocation) {
-        return ResponseUtil.error(404, 'Ciudad no encontrada');
+        return ResponseUtil.error(404, 'Localidad no encontrada');
       }
 
       existingLocation.state = 0;
-      const updatedCity = await this.locationRepository.save(existingLocation);
+      const updatedLocation = await this.locationRepository.save(existingLocation);
 
-      if (updatedCity) {
+      if (updatedLocation) {
         return ResponseUtil.success(
           200,
-          'Ciudad eliminada exitosamente',
-          updatedCity
+          'Localidad eliminada exitosamente',
+          updatedLocation
         );
       } else {
         return ResponseUtil.error(
           500,
-          'Ha ocurrido un problema al eliminar la Ciudad'
+          'Ha ocurrido un problema al eliminar la Localidad'
         );
       }
     } catch (error) {
       return ResponseUtil.error(
         500,
-        'Error al eliminar la Ciudad'
+        'Error al eliminar la Localidad'
       );
     }
   }
@@ -223,28 +240,28 @@ export class LocationsService {
         .getOne();
 
       if (!existingLocation) {
-        return ResponseUtil.error(404, 'Ciudad no encontrada');
+        return ResponseUtil.error(404, 'Localidad no encontrada');
       }
 
       existingLocation.state = 1;
-      const updatedCity = await this.locationRepository.save(existingLocation);
+      const updatedLocation = await this.locationRepository.save(existingLocation);
 
-      if (updatedCity) {
+      if (updatedLocation) {
         return ResponseUtil.success(
           200,
-          'Ciudad eliminada exitosamente',
-          updatedCity
+          'Localidad eliminada exitosamente',
+          updatedLocation
         );
       } else {
         return ResponseUtil.error(
           500,
-          'Ha ocurrido un problema al eliminar la Ciudad'
+          'Ha ocurrido un problema al eliminar la Localidad'
         );
       }
     } catch (error) {
       return ResponseUtil.error(
         500,
-        'Error al eliminar la Ciudad'
+        'Error al eliminar la Localidad'
       );
     }
   }
